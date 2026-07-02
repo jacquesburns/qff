@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Qantas Reward Seat Alerter</title>
+<style>
+  :root { --red:#e40000; --ink:#1a1a1a; --muted:#666; --line:#eee; --bg:#fafafa; }
+  * { box-sizing:border-box; }
+  body { margin:0; font-family:-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
+         color:var(--ink); background:var(--bg); line-height:1.5; }
+  .wrap { max-width:640px; margin:0 auto; padding:48px 24px; }
+  h1 { font-size:1.6rem; margin:0 0 4px; }
+  .sub { color:var(--muted); margin:0 0 28px; }
+  .card { background:#fff; border:1px solid var(--line); border-radius:14px; padding:22px; margin-bottom:18px; }
+  .card h2 { font-size:1rem; margin:0 0 10px; text-transform:uppercase; letter-spacing:.04em; color:var(--muted); }
+  button { background:var(--red); color:#fff; border:0; border-radius:10px;
+           padding:12px 20px; font-size:1rem; font-weight:600; cursor:pointer; }
+  button:disabled { opacity:.5; cursor:default; }
+  .result { margin-top:14px; font-size:.92rem; white-space:pre-wrap; color:var(--ink); }
+  ul { margin:6px 0 0; padding-left:20px; } li { margin:4px 0; }
+  code { background:#f2f2f2; padding:1px 6px; border-radius:6px; font-size:.9em; }
+  a { color:var(--red); }
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>✈️ Qantas Reward Seat Alerter</h1>
+    <p class="sub">Watching your routes and emailing you when new Classic Reward seats appear.</p>
+
+    <div class="card">
+      <h2>Run a check now</h2>
+      <p style="margin:0 0 14px;color:var(--muted)">Runs the same check the schedule does. Takes up to a minute.</p>
+      <button id="run">Check now</button>
+      <div class="result" id="out"></div>
+    </div>
+
+    <div class="card">
+      <h2>Currently watching</h2>
+      <ul>
+        <li>Outbound: BNE/SYD → North Asia (9 cities), Business + First, 29 Nov – 3 Dec 2026</li>
+        <li>Return: North Asia → BNE/SYD, Business + First, 16 – 19 Dec 2026</li>
+      </ul>
+      <p style="margin:12px 0 0;color:var(--muted)">Change routes/dates by editing <code>watchlist.json</code> and re-deploying.</p>
+    </div>
+
+    <div class="card">
+      <h2>Status</h2>
+      <p style="margin:0;color:var(--muted)">Runs automatically every 3 hours. First run sends a baseline email so you know it works; after that you only get emailed about new seats.</p>
+    </div>
+  </div>
+
+<script>
+  const btn = document.getElementById('run');
+  const out = document.getElementById('out');
+  btn.addEventListener('click', async () => {
+    btn.disabled = true; out.textContent = 'Checking… (this can take up to a minute)';
+    try {
+      const res = await fetch('/.netlify/functions/check-rewards');
+      const data = await res.json();
+      out.textContent =
+        `Done. Searched availabilities found: ${data.parsed}\n` +
+        `New since last time: ${data.new}\n` +
+        (data.new > 0 ? 'Check your inbox — an alert email is on its way.' :
+                        'Nothing new this time. Snapshot updated.');
+    } catch (e) {
+      out.textContent = 'Could not run on demand here — that\'s OK. It still runs automatically every 3 hours. ('+e.message+')';
+    } finally {
+      btn.disabled = false;
+    }
+  });
+</script>
+</body>
+</html>

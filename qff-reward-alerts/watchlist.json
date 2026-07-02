@@ -1,0 +1,27 @@
+{
+  "_readme": "Edit ONLY this file to change what you watch. Airport codes are 3-letter IATA. Dates are YYYY-MM-DD. Cabins: any of Economy, Premium Economy, Business, First. Each item in 'watches' is one route-group with its own dates.",
+
+  "watches": [
+    {
+      "label": "Outbound: Brisbane/Sydney to North Asia",
+      "origins": ["BNE", "SYD"],
+      "destinations": ["PEK", "HKG", "CAN", "CTS", "KIX", "PVG", "TPE", "HND", "NRT"],
+      "cabins": ["Business", "First"],
+      "dates": ["2026-11-29", "2026-11-30", "2026-12-01", "2026-12-02", "2026-12-03"]
+    },
+    {
+      "label": "Return: North Asia to Brisbane/Sydney",
+      "origins": ["PEK", "HKG", "CAN", "CTS", "KIX", "PVG", "TPE", "HND", "NRT"],
+      "destinations": ["BNE", "SYD"],
+      "cabins": ["Business", "First"],
+      "dates": ["2026-12-16", "2026-12-17", "2026-12-18", "2026-12-19"]
+    }
+  ],
+
+  "settings": {
+    "maxFetchesPerRun": 40,
+    "maxPagesPerSearch": 5,
+    "delayMsBetweenFetches": 900,
+    "alertOnSeatIncrease": true
+  }
+}

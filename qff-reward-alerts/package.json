@@ -1,0 +1,10 @@
+{
+  "name": "qff-reward-alerts",
+  "version": "1.0.0",
+  "type": "module",
+  "private": true,
+  "description": "Personal Qantas Frequent Flyer Classic Reward availability email alerter (Netlify Scheduled Function).",
+  "dependencies": {
+    "@netlify/blobs": "^8.1.0"
+  }
+}

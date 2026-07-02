@@ -1,0 +1,9 @@
+# Netlify config for the Qantas reward alerter.
+# Nothing here needs editing.
+
+[build]
+  functions = "netlify/functions"
+  publish = "."
+
+[functions]
+  node_bundler = "esbuild"
